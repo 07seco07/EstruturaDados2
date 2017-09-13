@@ -27,6 +27,36 @@ void inserirNo (no **raiz, int elemento){
 	printf("Elemento %d já existe. \n",elemento);
 }
 
+no* buscaNo(no **raiz, int elemento){
+	if(*raiz == NULL || (*raiz)->valor == elemento){
+		return *raiz;
+	}else{
+		if(elemento<(*raiz)->valor){
+			buscaNo(&(*raiz)->esq, elemento);	
+		}else{
+			return buscaNo(&(*raiz)->dir, elemento);	
+		}	
+	}
+}
+
+no* minimo(no **raiz){
+	no *aux = (no*)malloc(sizeof(no));
+	aux=*raiz;
+	while(aux->esq != NULL){
+		aux = aux->esq;
+	}
+	return aux;
+}
+
+no* maximo(no **raiz){
+	no *aux = (no*)malloc(sizeof(no));
+	aux=*raiz;
+	while(aux->dir != NULL){
+		aux = aux->dir;
+	}
+	return aux;
+}
+
 int main(){
 	no *raiz = NULL;
 	
