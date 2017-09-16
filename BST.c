@@ -90,14 +90,128 @@ void imprimiPosOrder(no **raiz){
 	}
 }
 
+no removerNo(no **raiz, int elemento){
+	no* x = *raiz;
+	no *aux, *pai;
+	int valor;
+	if(x == NULL){
+		printf("Valor nao encontrado! \n");
+		return **raiz;
+	}
+	if(x->valor == elemento){
+		if(x->esq != NULL){
+			aux = x->esq;
+		}
+		if(aux->dir != NULL){
+			while(aux->dir != NULL) aux = aux->dir;
+			pai = x->esq;
+			while(pai->dir != aux) pai=pai->dir;
+			valor=aux->valor;
+			free(aux);
+			pai->dir=NULL;
+			x->valor=valor;
+			return *x; 
+		}else{
+			x->valor = aux->valor;
+			x->esq = aux->esq;
+			free(aux);
+			return *x;
+		}
+		if(aux->esq != NULL){
+		aux= aux->dir;
+		if(aux->esq != NULL){
+			while(aux->esq != NULL) aux = aux->esq;
+			pai = x->dir;
+			while(pai->esq != aux) pai=pai->esq;
+			valor=aux->valor;
+			free(aux);
+			pai->esq=NULL;
+			x->valor=valor;
+			return *x;
+		}else{
+			x->valor = aux->valor;
+			x->dir = aux->dir;
+			free(aux);
+			return *x;
+		}		
+		}
+		
+		
+		
+	}
+	if(x->valor > elemento){
+		*x->esq = removerNo( &(x)->esq, elemento);
+	}
+	if(x->valor > elemento){
+		*x->dir = removerNo(&(x)->dir, elemento);
+	}
+	return **raiz;
+}
 
 
 int main(){
-	no *raiz = NULL;
-	
-	inserirNo(&raiz,10);
-	inserirNo(&raiz,10);
-	inserirNo(&raiz,55);
-	
+	no *raiz = (no*)malloc(sizeof(no));
+	raiz = NULL;
+	no *aux;
+	int x=1,y;
+	while(x!=0){
+		printf("-------ARVORE DE BUSCA BINARIA---------------\n");
+		printf("0 SAIR\n");
+		printf("1 INSERIR\n");
+		printf("2 DELETAR\n");
+		printf("3 BUSCAR\n");
+		printf("4 IMPRIMIR\n");	
+		printf("5 MAIOR NO");
+		printf("6 MENOR NO");	
+		printf("---------------------------------------------\n");
+		scanf("%d",&x);
+		
+		if(x==0){
+			break;
+		}
+		if(x==1){
+			printf("Informe o elemento para Insercao: \n");
+			scanf("%d",&y);
+			inserirNo(&raiz,y);
+		}
+		if(x==2){
+			printf("Informe o elemento para Delecao: \n");
+			scanf("%d",&y);
+			removerNo(&raiz, y);
+		}
+		if(x==3){
+			printf("Informe o elemento para Busca: \n");
+			scanf("%d",&y);
+			buscaNo(&raiz, y);
+		}
+		if(x==4){
+			printf("-------INFORME FORMA DE IMPRESSAO------------\n");
+			printf("0 SAIR\n");
+			printf("1 PRE ORDER\n");
+			printf("2 IN ORDER\n");
+			printf("3 POS ORDER\n");	
+			printf("---------------------------------------------\n");
+			scanf("%d",&x);
+			if(x==1){
+				imprimirPreOrder(&raiz);	
+			}
+			if(x==2){
+				imprimirInOrder(&raiz);
+			}
+			if(x==3){
+				imprimiPosOrder(&raiz);
+			}
+		}
+		if(x==5){
+			aux=maximo(&raiz);
+			printf("MAIOR NO : %d \n",&aux->valor);
+		}
+		if(x==6){
+			aux=minimo(&raiz);
+			printf("MENOR NO : %d \n",&aux->valor);
+		}	
+	}	
+	free(raiz);
+	free(aux);
 	return 0;	
 }
