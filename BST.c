@@ -57,6 +57,41 @@ no* maximo(no **raiz){
 	return aux;
 }
 
+void imprimirPreOrder(no **raiz){
+	no *aux = *raiz;
+	if(aux != NULL){
+		printf("%d ", aux->valor);
+		if(aux->esq != NULL) imprimirPreOrder(&(aux)->esq);
+		if(aux->dir != NULL) imprimirPreOrder(&(aux)->dir);
+	}else{
+		printf("Arvore Vazia!\n");
+	}
+}
+
+void imprimirInOrder(no **raiz){
+	no *aux = *raiz;
+	if(aux != NULL){
+		if(aux->esq != NULL) imprimirInOrder(&(aux)->esq);
+		printf("%d ", aux->valor);
+		if(aux->dir != NULL) imprimirInOrder(&(aux)->dir);
+	}else{
+		printf("Arvore Vazia!\n");
+	}
+}
+
+void imprimiPosOrder(no **raiz){
+	no *aux = *raiz;
+	if(aux != NULL){
+		if(aux->esq != NULL) imprimiPosOrder(&(aux)->esq);
+		if(aux->dir != NULL) imprimiPosOrder(&(aux)->dir);
+		printf("%d ", aux->valor);
+	}else{
+		printf("Arvore Vazia!\n");
+	}
+}
+
+
+
 int main(){
 	no *raiz = NULL;
 	
