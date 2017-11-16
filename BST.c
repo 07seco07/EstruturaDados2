@@ -135,9 +135,6 @@ no removerNo(no **raiz, int elemento){
 			return *x;
 		}		
 		}
-		
-		
-		
 	}
 	if(x->valor > elemento){
 		*x->esq = removerNo( &(x)->esq, elemento);
