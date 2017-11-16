@@ -161,8 +161,8 @@ int main(){
 		printf("2 DELETAR\n");
 		printf("3 BUSCAR\n");
 		printf("4 IMPRIMIR\n");	
-		printf("5 MAIOR NO");
-		printf("6 MENOR NO");	
+		printf("5 MAIOR NO \n");
+		printf("6 MENOR NO \n");	
 		printf("---------------------------------------------\n");
 		scanf("%d",&x);
 		
@@ -204,14 +204,12 @@ int main(){
 		}
 		if(x==5){
 			aux=maximo(&raiz);
-			printf("MAIOR NO : %d \n",&aux->valor);
+			printf("MAIOR NO : %d \n",aux->valor);
 		}
 		if(x==6){
 			aux=minimo(&raiz);
-			printf("MENOR NO : %d \n",&aux->valor);
+			printf("MENOR NO : %d \n",aux->valor);
 		}	
-	}	
-	free(raiz);
-	free(aux);
-	return 0;	
+	}
+	return 0;
 }
