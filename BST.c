@@ -90,61 +90,40 @@ void imprimiPosOrder(no **raiz){
 	}
 }
 
-no removerNo(no **raiz, int elemento){
-	no* x = *raiz;
-	no *aux, *pai;
-	int valor;
-	if(x == NULL){
+no* removerNo(no *raiz, int elemento){
+	no* x = raiz;
+	no *aux;
+	
+	if(!raiz){
 		printf("Valor nao encontrado! \n");
-		return **raiz;
+		return raiz;
 	}
 	if(x->valor == elemento){
-		if(x->esq != NULL){
-			aux = x->esq;
+		if(x->esq==NULL && x->dir==NULL){
+			x=NULL;
+			return x;
 		}
-		if(aux->dir != NULL){
-			while(aux->dir != NULL) aux = aux->dir;
-			pai = x->esq;
-			while(pai->dir != aux) pai=pai->dir;
-			valor=aux->valor;
-			free(aux);
-			pai->dir=NULL;
-			x->valor=valor;
-			return *x; 
-		}else{
+		if(x->dir==NULL && x->esq !=NULL){
+			aux = maximo(&(x->esq));
+			x = removerNo(x,aux->valor);
 			x->valor = aux->valor;
-			x->esq = aux->esq;
-			free(aux);
-			return *x;
+			return x;
 		}
-		if(aux->esq != NULL){
-		aux= aux->dir;
-		if(aux->esq != NULL){
-			while(aux->esq != NULL) aux = aux->esq;
-			pai = x->dir;
-			while(pai->esq != aux) pai=pai->esq;
-			valor=aux->valor;
-			free(aux);
-			pai->esq=NULL;
-			x->valor=valor;
-			return *x;
-		}else{
+		if(x->esq==NULL && x->dir !=NULL){
+			aux = minimo(&(x->dir));
+			x= removerNo(x,aux->valor);
 			x->valor = aux->valor;
-			x->dir = aux->dir;
-			free(aux);
-			return *x;
-		}		
+			return x;
 		}
 	}
 	if(x->valor > elemento){
-		*x->esq = removerNo( &(x)->esq, elemento);
+		x->esq = removerNo( x->esq, elemento);
 	}
-	if(x->valor > elemento){
-		*x->dir = removerNo(&(x)->dir, elemento);
+	if(x->valor < elemento){
+		x->dir = removerNo(x->dir, elemento);
 	}
-	return **raiz;
+	return raiz;
 }
-
 
 int main(){
 	no *raiz = (no*)malloc(sizeof(no));
@@ -174,7 +153,7 @@ int main(){
 		if(x==2){
 			printf("Informe o elemento para Delecao: \n");
 			scanf("%d",&y);
-			removerNo(&raiz, y);
+			raiz = removerNo(raiz, y);
 		}
 		if(x==3){
 			printf("Informe o elemento para Busca: \n");
