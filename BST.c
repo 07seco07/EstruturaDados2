@@ -42,6 +42,10 @@ no* buscaNo(no **raiz, int elemento){
 no* minimo(no **raiz){
 	no *aux = (no*)malloc(sizeof(no));
 	aux=*raiz;
+	if(aux == NULL){
+		printf("Arvore Vazia! \n");
+		return *raiz;
+	}
 	while(aux->esq != NULL){
 		aux = aux->esq;
 	}
@@ -51,6 +55,10 @@ no* minimo(no **raiz){
 no* maximo(no **raiz){
 	no *aux = (no*)malloc(sizeof(no));
 	aux=*raiz;
+	if(aux == NULL){
+		printf("Arvore Vazia! \n");
+		return *raiz;
+	}
 	while(aux->dir != NULL){
 		aux = aux->dir;
 	}
@@ -180,12 +188,15 @@ int main(){
 		}
 		if(x==5){
 			aux=maximo(&raiz);
+			if(raiz != NULL){
 			printf("MAIOR NO : %d \n",aux->valor);
+			}
 		}
 		if(x==6){
 			aux=minimo(&raiz);
+			if(raiz != NULL){
 			printf("MENOR NO : %d \n",aux->valor);
-		}	
-	}
+			}		}	
+		}
 	return 0;
 }
