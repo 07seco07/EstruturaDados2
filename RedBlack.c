@@ -18,6 +18,17 @@ typedef struct tree{
 	struct no* nill;
 }tree;
 
+tree* criarArvore(){
+	tree *arvore = (tree*) malloc (sizeof(tree));
+	arvore->nill = (no*) malloc (sizeof(no));
+	arvore->nill->dir = NULL;
+	arvore->nill->esq = NULL;
+	arvore->nill->pai = NULL;
+	arvore->nill->cor = BLACK;
+	arvore->raiz = arvore->nill;
+	return arvore;
+}
+
 void rotacaoEsquerda(tree *arvore, no *nodo){
 	no *aux;
 	aux = nodo->dir;
@@ -318,8 +329,7 @@ no* removerNo(tree *arvore, no *raiz, int elemento){   //Pego funcao pronta, som
 
 
 int main(){
-	tree *arvore = (tree*)malloc(sizeof(tree));
-	arvore = NULL;
+	tree *arvore = criarArvore();
 	tree *aux;
 	no* nodo;
 	int x=1,y;
