@@ -127,18 +127,18 @@ void inserirArvore (tree *arvore, int elemento){
 	aux->esq = arvore->nill;
 	aux->pai = arvore->nill;
 	
-	if(arvore == NULL){
+	if(arvore->raiz == arvore->nill){
 		aux->cor=true;
 		arvore->raiz = aux;
 		return;
 	}else{
 		inserirNo(arvore, &arvore->raiz, elemento);
-		return;		
+		return;
 	}
 }
 
 void inserirNo (tree *arvore, no **raiz, int elemento){
-	if(raiz == NULL){
+	if(raiz == arvore->nill){
 		no *aux = (no*)malloc(sizeof(no));
 		aux->valor = elemento;
 		aux->cor = false;
