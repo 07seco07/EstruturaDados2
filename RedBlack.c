@@ -1,4 +1,4 @@
-//Corrigindo Bugs :D
+//Corrigindo Bugs da Inserção :D
 
 #include <stdio.h>
 #include <stdlib.h>
