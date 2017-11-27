@@ -173,6 +173,8 @@ void preorder(no *nodo, no *nill){
 		printf("%d \n",nodo->valor);
 		preorder(nodo->esq, nill);
 		preorder(nodo->dir, nill);
+	}else{
+		printf("\nArvore Vazia! \n\n");
 	}
 }
 
@@ -186,6 +188,8 @@ void inorder(no *nodo, no *nill){
 		}
 		printf("%d \n",nodo->valor);
 		inorder(nodo->dir, nill);
+	}else{
+		printf("\nArvore Vazia! \n\n");
 	}
 }
 
@@ -199,6 +203,8 @@ void posorder(no *nodo, no *nill){
 			printf("PRETO - ");
 		}
 		printf("%d \n",nodo->valor);
+	}else{
+		printf("\nArvore Vazia! \n\n");
 	}
 }
 
