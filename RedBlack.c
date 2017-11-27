@@ -18,6 +18,86 @@ typedef struct tree{
 	struct no* nill;
 }tree;
 
+tree* criarArvore();
+no *buscar (tree *arvore, no *nodo, int elemento);
+void inserirArvore (tree *arvore, int elemento);
+void inserirNo (tree *arvore, no **raiz, int elemento);
+void arrumarArvore (tree *arvore, no *nodo);
+void preorder(no *nodo, no *nill);
+void inorder(no *nodo, no *nill);
+void posorder(no *nodo, no *nill);
+no* removerNo(tree *arvore, no *raiz, int elemento);
+void arrumarArvoreRemocao(tree *arvore, no *nodo);
+no* minimo (tree *arvore, no *nodo);
+no* sucessor(tree *arvore, no *nodo);
+void rotacaoEsquerda(tree *arvore, no *nodo);
+void rotacaoDireita(tree *arvore, no *nodo);
+
+int main(){
+	tree *arvore = criarArvore();
+	tree *aux = arvore;
+	no* nodo;
+	int x=1,y;
+	while(x!=0){
+		printf("-------ARVORE VERMELHA E PRETA----------------\n");
+		printf("0 SAIR\n");
+		printf("1 INSERIR\n");
+		printf("2 DELETAR\n");
+		printf("3 BUSCAR\n");
+		printf("4 IMPRIMIR\n");	
+		printf("---------------------------------------------\n");
+		scanf("%d",&x);
+		
+		if(x==0){
+			break;
+		}
+		if(x==1){
+			printf("Informe o elemento para Insercao: \n");
+			scanf("%d",&y);
+			inserirArvore (arvore, y);
+		}
+		if(x==2){
+			printf("Informe o elemento para Delecao: \n");
+			scanf("%d",&y);
+			arvore->raiz = removerNo(arvore, arvore->raiz, y);
+		}
+		if(x==3){
+			if(arvore == aux){
+				printf("\nArvore Vazia! \n\n");
+			}else{
+				printf("Informe o elemento para Busca: \n");
+				scanf("%d",&y);
+				nodo = buscar(arvore,arvore->raiz, y);
+				printf("Elemento: %d \n", nodo->valor);
+				if(nodo->cor == BLACK){
+					printf("Cor: Preto \n");
+				}else{
+					printf("Cor: Vermelho \n");
+				}
+			}			
+		}
+		if(x==4){
+			printf("-------INFORME FORMA DE IMPRESSAO------------\n");
+			printf("0 SAIR\n");
+			printf("1 PRE ORDER\n");
+			printf("2 IN ORDER\n");
+			printf("3 POS ORDER\n");	
+			printf("---------------------------------------------\n");
+			scanf("%d",&x);
+			if(x==1){
+				preorder(arvore->raiz, arvore->nill);	
+			}
+			if(x==2){
+				inorder(arvore->raiz, arvore->nill);
+			}
+			if(x==3){
+				posorder(arvore->raiz, arvore->nill);
+			}
+		}	
+	}
+	return 0;	
+}
+
 tree* criarArvore(){
 	tree *arvore = (tree*) malloc (sizeof(tree));
 	arvore->nill = (no*) malloc (sizeof(no));
@@ -29,47 +109,55 @@ tree* criarArvore(){
 	return arvore;
 }
 
-void rotacaoEsquerda(tree *arvore, no *nodo){
-	no *aux;
-	aux = nodo->dir;
-	nodo->dir = aux->esq;
-	if(aux->esq != arvore->nill){
-		aux->esq->pai = nodo;
+no *buscar (tree *arvore, no *nodo, int elemento){
+	if(nodo == arvore->nill || nodo->valor== elemento){
+		return nodo;
 	}
-	aux->pai = nodo->pai;
-	if(nodo->pai == arvore->nill){
-		arvore->raiz = aux;
-	}else{
-		if(nodo == nodo->pai->esq){
-			nodo->pai->esq = aux;
-		}else{
-			nodo->pai->dir = aux;
-		}
+	if(elemento <= nodo->valor){
+		return buscar (arvore, nodo->esq, elemento);
 	}
-	aux->esq = nodo;
-	nodo->pai = aux;
-	return;
+	return buscar(arvore, nodo->dir, elemento);
 }
 
-void rotacaoDireita(tree *arvore, no *nodo){
-	no *aux;
-	aux = nodo->esq;
-	nodo->esq = aux->dir;
-	if(aux->dir != arvore->nill){
-		aux->dir->pai = nodo;
-	}
-	aux->pai = nodo->pai;
-	if(nodo->pai == arvore->nill){
+void inserirArvore (tree *arvore, int elemento){
+	no *aux = (no*)malloc(sizeof(no));
+	aux->valor = elemento;
+	aux->cor = false;
+	aux->dir = arvore->nill;
+	aux->esq = arvore->nill;
+	aux->pai = arvore->nill;
+	
+	if(arvore == NULL){
+		aux->cor=true;
 		arvore->raiz = aux;
+		return;
 	}else{
-		if(nodo == nodo->pai->dir){
-			nodo->pai->dir = aux;
-		}else{
-			nodo->pai->esq = aux;
-		}
+		inserirNo(arvore, &arvore->raiz, elemento);
+		return;		
 	}
-	aux->dir = nodo;
-	nodo->pai = aux;
+}
+
+void inserirNo (tree *arvore, no **raiz, int elemento){
+	if(raiz == NULL){
+		no *aux = (no*)malloc(sizeof(no));
+		aux->valor = elemento;
+		aux->cor = false;
+		aux->dir = arvore->nill;
+		aux->esq = arvore->nill;
+		aux->pai = arvore->nill;
+		*raiz = aux;
+		arrumarArvore(arvore, aux);
+		return;
+	}
+	if(elemento < (*raiz)->valor){
+		inserirNo(arvore, &(*raiz)->esq,elemento);
+		return;
+	}
+	if(elemento > (*raiz)->valor){
+		inserirNo(arvore, &(*raiz)->dir,elemento);
+		return;
+	}	
+	printf("Elemento %d já existe. \n",elemento);
 	return;
 }
 
@@ -121,48 +209,6 @@ void arrumarArvore (tree *arvore, no *nodo){
 	return;
 }
 
-void inserirNo (tree *arvore, no **raiz, int elemento){
-	if(raiz == NULL){
-		no *aux = (no*)malloc(sizeof(no));
-		aux->valor = elemento;
-		aux->cor = false;
-		aux->dir = arvore->nill;
-		aux->esq = arvore->nill;
-		aux->pai = arvore->nill;
-		*raiz = aux;
-		arrumarArvore(arvore, aux);
-		return;
-	}
-	if(elemento < (*raiz)->valor){
-		inserirNo(arvore, &(*raiz)->esq,elemento);
-		return;
-	}
-	if(elemento > (*raiz)->valor){
-		inserirNo(arvore, &(*raiz)->dir,elemento);
-		return;
-	}	
-	printf("Elemento %d já existe. \n",elemento);
-	return;
-}
-
-void inserirArvore (tree *arvore, int elemento){
-	no *aux = (no*)malloc(sizeof(no));
-	aux->valor = elemento;
-	aux->cor = false;
-	aux->dir = arvore->nill;
-	aux->esq = arvore->nill;
-	aux->pai = arvore->nill;
-	
-	if(arvore == NULL){
-		aux->cor=true;
-		arvore->raiz = aux;
-		return;
-	}else{
-		inserirNo(arvore, &arvore->raiz, elemento);
-		return;		
-	}
-}
-
 void preorder(no *nodo, no *nill){
 	if(nodo != nill){
 		if(nodo->cor == RED){
@@ -206,36 +252,6 @@ void posorder(no *nodo, no *nill){
 	}else{
 		printf("\nArvore Vazia! \n\n");
 	}
-}
-
-no* minimo (tree *arvore, no *nodo){
-	no *aux = nodo;
-	while (aux->esq != arvore->nill){
-		aux = aux->esq;
-	}
-	return aux;
-}
-
-no* sucessor(tree *arvore, no *nodo){
-	if(nodo->dir != arvore->nill){
-		return minimo(arvore, nodo->dir);
-	}
-	no* pai = nodo->pai;
-	while(pai != arvore->nill && nodo == pai->dir){
-		nodo = pai;
-		pai = pai->pai;
-	}
-	return pai;
-}
-
-no *buscar (tree *arvore, no *nodo, int elemento){
-	if(nodo == arvore->nill || nodo->valor== elemento){
-		return nodo;
-	}
-	if(elemento <= nodo->valor){
-		return buscar (arvore, nodo->esq, elemento);
-	}
-	return buscar(arvore, nodo->dir, elemento);
 }
 
 void arrumarArvoreRemocao(tree *arvore, no *nodo){    //Pego funcao pronta, somente adaptado (até fazer a minha)
@@ -333,68 +349,66 @@ no* removerNo(tree *arvore, no *raiz, int elemento){   //Pego funcao pronta, som
 	return nodo;
 }
 
-
-int main(){
-	tree *arvore = criarArvore();
-	tree *aux = arvore;
-	no* nodo;
-	int x=1,y;
-	while(x!=0){
-		printf("-------ARVORE VERMELHA E PRETA----------------\n");
-		printf("0 SAIR\n");
-		printf("1 INSERIR\n");
-		printf("2 DELETAR\n");
-		printf("3 BUSCAR\n");
-		printf("4 IMPRIMIR\n");	
-		printf("---------------------------------------------\n");
-		scanf("%d",&x);
-		
-		if(x==0){
-			break;
-		}
-		if(x==1){
-			printf("Informe o elemento para Insercao: \n");
-			scanf("%d",&y);
-			inserirArvore (arvore, y);
-		}
-		if(x==2){
-			printf("Informe o elemento para Delecao: \n");
-			scanf("%d",&y);
-			arvore->raiz = removerNo(arvore, arvore->raiz, y);
-		}
-		if(x==3){
-			if(arvore == aux){
-				printf("\nArvore Vazia! \n\n");
-			}else{
-				printf("Informe o elemento para Busca: \n");
-				scanf("%d",&y);
-				nodo = buscar(arvore,arvore->raiz, y);
-				printf("Elemento: %d \n", nodo->valor);
-				if(nodo->cor == BLACK){
-					printf("Cor: Preto \n");
-				}else{
-					printf("Cor: Vermelho \n");
-				}
-			}			
-		}
-		if(x==4){
-			printf("-------INFORME FORMA DE IMPRESSAO------------\n");
-			printf("0 SAIR\n");
-			printf("1 PRE ORDER\n");
-			printf("2 IN ORDER\n");
-			printf("3 POS ORDER\n");	
-			printf("---------------------------------------------\n");
-			scanf("%d",&x);
-			if(x==1){
-				preorder(arvore->raiz, arvore->nill);	
-			}
-			if(x==2){
-				inorder(arvore->raiz, arvore->nill);
-			}
-			if(x==3){
-				posorder(arvore->raiz, arvore->nill);
-			}
-		}	
+no* minimo (tree *arvore, no *nodo){
+	no *aux = nodo;
+	while (aux->esq != arvore->nill){
+		aux = aux->esq;
 	}
-	return 0;	
+	return aux;
+}
+
+no* sucessor(tree *arvore, no *nodo){
+	if(nodo->dir != arvore->nill){
+		return minimo(arvore, nodo->dir);
+	}
+	no* pai = nodo->pai;
+	while(pai != arvore->nill && nodo == pai->dir){
+		nodo = pai;
+		pai = pai->pai;
+	}
+	return pai;
+}
+
+void rotacaoEsquerda(tree *arvore, no *nodo){
+	no *aux;
+	aux = nodo->dir;
+	nodo->dir = aux->esq;
+	if(aux->esq != arvore->nill){
+		aux->esq->pai = nodo;
+	}
+	aux->pai = nodo->pai;
+	if(nodo->pai == arvore->nill){
+		arvore->raiz = aux;
+	}else{
+		if(nodo == nodo->pai->esq){
+			nodo->pai->esq = aux;
+		}else{
+			nodo->pai->dir = aux;
+		}
+	}
+	aux->esq = nodo;
+	nodo->pai = aux;
+	return;
+}
+
+void rotacaoDireita(tree *arvore, no *nodo){
+	no *aux;
+	aux = nodo->esq;
+	nodo->esq = aux->dir;
+	if(aux->dir != arvore->nill){
+		aux->dir->pai = nodo;
+	}
+	aux->pai = nodo->pai;
+	if(nodo->pai == arvore->nill){
+		arvore->raiz = aux;
+	}else{
+		if(nodo == nodo->pai->dir){
+			nodo->pai->dir = aux;
+		}else{
+			nodo->pai->esq = aux;
+		}
+	}
+	aux->dir = nodo;
+	nodo->pai = aux;
+	return;
 }
