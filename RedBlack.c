@@ -336,7 +336,7 @@ no* removerNo(tree *arvore, no *raiz, int elemento){   //Pego funcao pronta, som
 
 int main(){
 	tree *arvore = criarArvore();
-	tree *aux;
+	tree *aux = arvore;
 	no* nodo;
 	int x=1,y;
 	while(x!=0){
@@ -363,15 +363,19 @@ int main(){
 			arvore->raiz = removerNo(arvore, arvore->raiz, y);
 		}
 		if(x==3){
-			printf("Informe o elemento para Busca: \n");
-			scanf("%d",&y);
-			nodo = buscar(arvore,arvore->raiz, y);
-			printf("Elemento: %d \n", nodo->valor);
-			if(nodo->cor == BLACK){
-				printf("Cor: Preto \n");
+			if(arvore == aux){
+				printf("\nArvore Vazia! \n\n");
 			}else{
-				printf("Cor: Vermelho \n");
-			}
+				printf("Informe o elemento para Busca: \n");
+				scanf("%d",&y);
+				nodo = buscar(arvore,arvore->raiz, y);
+				printf("Elemento: %d \n", nodo->valor);
+				if(nodo->cor == BLACK){
+					printf("Cor: Preto \n");
+				}else{
+					printf("Cor: Vermelho \n");
+				}
+			}			
 		}
 		if(x==4){
 			printf("-------INFORME FORMA DE IMPRESSAO------------\n");
