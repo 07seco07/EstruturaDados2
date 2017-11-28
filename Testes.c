@@ -1,4 +1,4 @@
-//Corrigindo Bugs da Inserção :D
+//Corrigindo Bugs da funçao arrumarArvore :D
 
 #include <stdio.h>
 #include <stdlib.h>
