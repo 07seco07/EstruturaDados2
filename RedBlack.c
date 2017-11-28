@@ -1,4 +1,4 @@
-//Corrigindo Bugs da funçao arrumarArvore :D
+//Verificando alguns bugs da deleção
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -138,14 +138,18 @@ void inserirArvore (tree *arvore, int elemento){
 }
 
 void inserirNo (tree *arvore, no **raiz, int elemento){
-	if(*raiz == arvore->nill){
+	if((*raiz)->dir == arvore->nill && (*raiz)->dir == arvore->nill){
 		no *aux = (no*)malloc(sizeof(no));
 		aux->valor = elemento;
 		aux->cor = false;
 		aux->dir = arvore->nill;
 		aux->esq = arvore->nill;
-		aux->pai = arvore->nill;
-		*raiz = aux;
+		aux->pai = *raiz;
+		if(elemento < (*raiz)->valor){
+			(*raiz)->esq = aux;
+		}else{
+			(*raiz)->dir = aux;
+		}
 		arrumarArvore(arvore, aux);
 		return;
 	}
@@ -280,7 +284,7 @@ void arrumarArvoreRemocao(tree *arvore, no *nodo){    //Pego funcao pronta, some
 		}else{
 			aux = nodo->pai->esq;
 			if(aux->cor == RED){
-				aux->cor == BLACK;
+				aux->cor = BLACK;
 				nodo->pai->cor = RED;
 				rotacaoDireita(arvore, nodo->pai);
 				aux = nodo->pai->esq;				
