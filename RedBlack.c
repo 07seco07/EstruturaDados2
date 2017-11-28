@@ -1,5 +1,3 @@
-//Verificando alguns bugs da deleção
-
 #include <stdio.h>
 #include <stdlib.h>
 #define BLACK true
@@ -59,7 +57,7 @@ int main(){
 		if(x==2){
 			printf("Informe o elemento para Delecao: \n");
 			scanf("%d",&y);
-			arvore->raiz = removerNo(arvore, arvore->raiz, y);
+			nodo = removerNo(arvore, arvore->raiz, y);
 		}
 		if(x==3){
 			if(arvore == aux){
