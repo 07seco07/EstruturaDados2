@@ -127,18 +127,18 @@ void inserirArvore (tree *arvore, int elemento){
 	aux->esq = arvore->nill;
 	aux->pai = arvore->nill;
 	
-	if(arvore == NULL){
+	if(arvore->raiz == arvore->nill){
 		aux->cor=true;
 		arvore->raiz = aux;
 		return;
 	}else{
 		inserirNo(arvore, &arvore->raiz, elemento);
-		return;		
+		return;
 	}
 }
 
 void inserirNo (tree *arvore, no **raiz, int elemento){
-	if(raiz == NULL){
+	if(*raiz == arvore->nill){
 		no *aux = (no*)malloc(sizeof(no));
 		aux->valor = elemento;
 		aux->cor = false;
@@ -219,8 +219,7 @@ void preorder(no *nodo, no *nill){
 		printf("%d \n",nodo->valor);
 		preorder(nodo->esq, nill);
 		preorder(nodo->dir, nill);
-	}else{
-		printf("\nArvore Vazia! \n\n");
+		return;
 	}
 }
 
@@ -234,8 +233,6 @@ void inorder(no *nodo, no *nill){
 		}
 		printf("%d \n",nodo->valor);
 		inorder(nodo->dir, nill);
-	}else{
-		printf("\nArvore Vazia! \n\n");
 	}
 }
 
@@ -249,8 +246,6 @@ void posorder(no *nodo, no *nill){
 			printf("PRETO - ");
 		}
 		printf("%d \n",nodo->valor);
-	}else{
-		printf("\nArvore Vazia! \n\n");
 	}
 }
 
